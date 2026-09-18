@@ -1,6 +1,6 @@
 # Gym Progress API
 
-A REST API for logging workouts, exercises, sets, weights, and RPE — built to track strength training progress over time, with JWT-authenticated user accounts.
+A REST API for logging workouts, exercises, sets, weights, and RPE, built to track strength training progress over time, with JWT-authenticated user accounts.
 
 ## Why I built this
 
