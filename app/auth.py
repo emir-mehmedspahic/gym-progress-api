@@ -1,12 +1,21 @@
+import os
 from datetime import datetime, timedelta
 from typing import Optional
+from dotenv import load_dotenv
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
-# Secret key for JWT signing (In production, move this to an environment variable!)
-SECRET_KEY = "your-secret-key-keep-it-hidden"
+load_dotenv()
+
+# Secret key for JWT signing, read from the environment (or a local .env file).
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError(
+        "SECRET_KEY is not set. Copy .env.example to .env and set a long random value, "
+        'e.g. python -c "import secrets; print(secrets.token_hex(32))"'
+    )
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 

@@ -1,3 +1,9 @@
+import os
+
+# The app refuses to import without a signing key; tests use a throwaway one.
+# This must be set before `app` is imported below.
+os.environ.setdefault("SECRET_KEY", "test-only-secret-key-not-for-real-use")
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine

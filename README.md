@@ -15,7 +15,7 @@ I wanted a backend that models a real use case end-to-end: user auth, relational
 
 ## Tech stack
 
-FastAPI, SQLAlchemy, JWT (via `python-jose` or similar), SQLite, pytest, Pydantic.
+FastAPI, SQLAlchemy, SQLite, Pydantic, JWT (`python-jose`), password hashing (`passlib` + bcrypt), pytest.
 
 ## Endpoints
 
@@ -32,9 +32,18 @@ FastAPI, SQLAlchemy, JWT (via `python-jose` or similar), SQLite, pytest, Pydanti
 
 ```bash
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+source venv/bin/activate        # Windows PowerShell: .\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
+
+The app signs JWTs with a secret key that is read from the environment and is never stored in the repo. Create a `.env` file from the template and set a real value:
+
+```bash
+cp .env.example .env            # Windows PowerShell: Copy-Item .env.example .env
+python -c "import secrets; print(secrets.token_hex(32))"   # paste the output as SECRET_KEY in .env
+```
+
+The app will refuse to start if `SECRET_KEY` is missing.
 
 ## Running
 
@@ -47,7 +56,8 @@ Interactive API docs available at `http://127.0.0.1:8000/docs`.
 ## Running Tests
 
 ```bash
+pip install -r requirements-dev.txt
 python -m pytest
 ```
 
-Tests run against an isolated in-memory SQLite database — no setup required, no side effects on real data.
+Tests set their own throwaway `SECRET_KEY` and run against an isolated in-memory SQLite database — no setup required, no side effects on real data.
